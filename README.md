@@ -39,20 +39,24 @@ pixi add snakemake
 pixi add snakemake-executor-plugin-slurm
 ```
 
+### Cluster-specific settings
+
 Generate partition file (**this has to be done for each cluster**):
 
-```
+```shell
 generate-slurm-partition-config -o partitions.yaml
 ```
 
 Please also mind that the `profiles/config.yaml` needs to be adjusted to the queue
 names and slurm user of the given cluster:
 
-```
+```txt
 default-resources:
   slurm_partition: short  # Default SLURM partition
   slurm_account: t3       # SLURM account for job submission
 ```
+
+### Testing
 
 To test the local workflow:
 
