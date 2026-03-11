@@ -28,6 +28,15 @@ pixi run apptainer
 
 # Local execution with XRootD via EOS
 pixi run xrootd
+
+# SLURM execution with XRootD via EOS
+pixi run slurm_xrootd
+
+# SLURM with Apptainer containers and XRootD via EOS
+pixi run slurm_apptainer_xrootd
+
+# Local with Apptainer containers and XRootD via EOS
+pixi run apptainer_xrootd
 ```
 
 ## How to start from scratch
@@ -83,13 +92,16 @@ snakemake --executor slurm \
 
 ### XRootD / EOS integration
 
-To write workflow outputs directly to EOS via XRootD, you need a valid CERN Kerberos token in your environment (e.g., pointed to by `$KRB5CCNAME`). The XRootD target can be triggered via:
+To write workflow outputs directly to EOS via XRootD, you need a valid CERN Kerberos token in your environment (e.g., pointed to by `$KRB5CCNAME`). XRootD-enabled targets can be triggered via:
 
 ```shell
 pixi run xrootd
+pixi run slurm_xrootd
+pixi run slurm_apptainer_xrootd
+pixi run apptainer_xrootd
 ```
 
-This command uses Snakemake's `--default-storage-provider` to transparently map all inputs and outputs to your XRootD storage prefix without having to modify the `workflow/Snakefile`'s logic. You can adjust the destination path inside `pixi.toml` under the `xrootd` task.
+These commands use Snakemake's `--default-storage-provider` to transparently map all inputs and outputs to your XRootD storage prefix without having to modify the `workflow/Snakefile`'s logic. You can adjust the destination path inside `pixi.toml` under the XRootD tasks.
 The setting of `env XrdSecPROTOCOL=krb5,unix` enforces the use of the Kerberos token instead of using GSI authenticiation (grid certificate).
 
 ## Configuration

@@ -2,7 +2,7 @@
 authors = ["Clemens Lange <clemens.lange@cern.ch>"]
 channels = ["conda-forge", "bioconda"]
 name = "snakemake-psi-tier3-example"
-platforms = ["linux-64"]
+platforms = ["linux-64", "osx-arm64"]
 version = "0.1.0"
 
 [tasks]
@@ -29,6 +29,20 @@ rm -rf results \
   --snakefile workflow/Snakefile sort_script
 """
 
+# SLURM cluster execution with XRootD
+slurm_xrootd = """
+rm -rf results \
+&& export SNAKEMAKE_SLURM_PARTITIONS="$PWD/partitions.yaml" \
+&& env XrdSecPROTOCOL=krb5,unix snakemake --executor slurm \
+  --workflow-profile "$PWD/profiles" \
+  -j unlimited \
+  --verbose \
+  --printshellcmds \
+  --snakefile workflow/Snakefile sort_script \
+  --default-storage-provider xrootd \
+  --default-storage-prefix root://eosuser.cern.ch//eos/user/c/clange/snakemake-psi-tier3-example
+"""
+
 # SLURM cluster execution with Apptainer containers
 slurm_apptainer = """
 rm -rf results \
@@ -42,9 +56,30 @@ rm -rf results \
   --snakefile workflow/Snakefile sort_script
 """
 
+# SLURM cluster execution with Apptainer containers and XRootD
+slurm_apptainer_xrootd = """
+rm -rf results \
+&& export SNAKEMAKE_SLURM_PARTITIONS="$PWD/partitions.yaml" \
+&& env XrdSecPROTOCOL=krb5,unix snakemake --executor slurm \
+  --workflow-profile "$PWD/profiles" \
+  -j unlimited \
+  --verbose \
+  --software-deployment-method apptainer \
+  --printshellcmds \
+  --snakefile workflow/Snakefile sort_script \
+  --default-storage-provider xrootd \
+  --default-storage-prefix root://eosuser.cern.ch//eos/user/c/clange/snakemake-psi-tier3-example
+"""
+
 # Local execution with Apptainer containers
 apptainer = """ rm -rf results \
 && snakemake --verbose --cores 1 --software-deployment-method apptainer --printshellcmds --snakefile workflow/Snakefile sort_script
+"""
+
+# Local execution with Apptainer containers and XRootD
+apptainer_xrootd = """ env XrdSecPROTOCOL=krb5,unix snakemake --verbose --cores 1 --software-deployment-method apptainer --printshellcmds --snakefile workflow/Snakefile sort_script \
+  --default-storage-provider xrootd \
+  --default-storage-prefix root://eosuser.cern.ch//eos/user/c/clange/snakemake-psi-tier3-example
 """
 
 
