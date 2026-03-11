@@ -90,6 +90,7 @@ pixi run xrootd
 ```
 
 This command uses Snakemake's `--default-storage-provider` to transparently map all inputs and outputs to your XRootD storage prefix without having to modify the `workflow/Snakefile`'s logic. You can adjust the destination path inside `pixi.toml` under the `xrootd` task.
+The setting of `env XrdSecPROTOCOL=krb5,unix` enforces the use of the Kerberos token instead of using GSI authenticiation (grid certificate).
 
 ## Configuration
 

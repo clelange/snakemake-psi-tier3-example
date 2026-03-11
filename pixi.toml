@@ -12,7 +12,7 @@ local = """ rm -rf results \
 """
 
 # Local execution with XRootD
-xrootd = """ snakemake --verbose --cores 1 --printshellcmds --snakefile workflow/Snakefile sort_script \
+xrootd = """ env XrdSecPROTOCOL=krb5,unix snakemake --verbose --cores 1 --printshellcmds --snakefile workflow/Snakefile sort_script \
   --default-storage-provider xrootd \
   --default-storage-prefix root://eosuser.cern.ch//eos/user/c/clange/snakemake-psi-tier3-example
 """
