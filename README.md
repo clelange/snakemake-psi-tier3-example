@@ -25,6 +25,9 @@ pixi run slurm_apptainer
 
 # Local with Apptainer containers
 pixi run apptainer
+
+# Local execution with XRootD via EOS
+pixi run xrootd
 ```
 
 ## How to start from scratch
@@ -77,6 +80,16 @@ snakemake --executor slurm \
   --printshellcmds \
   --snakefile workflow/Snakefile sort_script
 ```
+
+### XRootD / EOS integration
+
+To write workflow outputs directly to EOS via XRootD, you need a valid CERN Kerberos token in your environment (e.g., pointed to by `$KRB5CCNAME`). The XRootD target can be triggered via:
+
+```shell
+pixi run xrootd
+```
+
+This command uses Snakemake's `--default-storage-provider` to transparently map all inputs and outputs to your XRootD storage prefix without having to modify the `workflow/Snakefile`'s logic. You can adjust the destination path inside `pixi.toml` under the `xrootd` task.
 
 ## Configuration
 
